@@ -1,0 +1,1468 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Kleinwagen-Vergleich – ≥ 100 PS & Schaltgetriebe</title>
+<style>
+  :root {
+    --bg: #f4f5f7; --card: #fff; --ink: #1d2330; --muted: #667085; --line: #e3e6ec;
+    --accent: #1f6feb; --good: #1a7f37; --bad: #c0392b; --warn: #b7791f; --chip: #eef2f8;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: var(--bg); color: var(--ink); line-height: 1.45; }
+  header { background: linear-gradient(120deg, #13294b, #1f6feb); color: #fff; padding: 32px 24px 24px; }
+  header h1 { margin: 0 0 6px; font-size: 28px; }
+  header p { margin: 0; opacity: .9; max-width: 900px; }
+  main { max-width: 1320px; margin: 0 auto; padding: 20px; }
+  .note { background: #fff8e6; border: 1px solid #f1d58a; border-radius: 10px; padding: 12px 16px;
+    margin-bottom: 18px; font-size: 14px; }
+  .controls { background: var(--card); border: 1px solid var(--line);
+    border-radius: 12px; padding: 14px 16px; display: flex; flex-wrap: wrap; gap: 18px; align-items: end;
+    box-shadow: 0 2px 10px rgba(0,0,0,.05); margin-bottom: 20px; }
+  .controls label { display: flex; flex-direction: column; font-size: 12px; color: var(--muted); gap: 4px; }
+  .controls input[type=range] { width: 170px; }
+  .controls select, .controls input[type=number] { padding: 6px 8px; border: 1px solid var(--line);
+    border-radius: 8px; font-size: 14px; }
+  .controls .val { font-weight: 600; color: var(--ink); font-size: 14px; }
+  .check { flex-direction: row !important; align-items: center; gap: 6px !important; font-size: 14px !important;
+    color: var(--ink) !important; }
+  .tabs { display: flex; gap: 8px; margin-bottom: 16px; }
+  .tabs button { border: 1px solid var(--line); background: var(--card); padding: 8px 14px; border-radius: 999px;
+    cursor: pointer; font-size: 14px; }
+  .tabs button.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(380px, 100%), 1fr)); gap: 18px; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 14px; overflow: hidden;
+    display: flex; flex-direction: column; box-shadow: 0 1px 4px rgba(0,0,0,.04); }
+  .card.fav { border: 2px solid var(--accent); }
+  .imgwrap { position: relative; aspect-ratio: 16/10; background: #dfe3ea; overflow: hidden; cursor: zoom-in; }
+  .imgwrap img { width: 100%; height: 100%; object-fit: cover; display: block; transition: opacity .25s; }
+  .imgtoggle { position: absolute; bottom: 8px; left: 8px; display: flex; gap: 4px; }
+  .imgtoggle button { border: 0; background: rgba(0,0,0,.55); color: #fff; padding: 4px 9px; border-radius: 6px;
+    font-size: 12px; cursor: pointer; }
+  .imgtoggle button.active { background: var(--accent); }
+  .badge { position: absolute; top: 8px; left: 8px; background: var(--accent); color: #fff; font-size: 12px;
+    padding: 3px 8px; border-radius: 6px; }
+  .badge.rank { left: auto; right: 8px; background: #f5b301; color: #1d2330; font-weight: 700; font-size: 15px; }
+  .badge.class { left: auto; right: 8px; background: #6b4fbb; }
+  .body { padding: 14px 16px 16px; display: flex; flex-direction: column; gap: 10px; flex: 1; }
+  .body h2 { margin: 0; font-size: 20px; }
+  .sub { color: var(--muted); font-size: 13px; margin-top: -6px; }
+  .prices { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .price { background: var(--chip); border-radius: 10px; padding: 8px 10px; }
+  .price .lbl { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: .03em; }
+  .price .num { font-size: 18px; font-weight: 700; }
+  .price .det { font-size: 12px; color: var(--muted); }
+  .specs { display: flex; flex-wrap: wrap; gap: 6px; }
+  .chip { background: var(--chip); border-radius: 999px; padding: 3px 10px; font-size: 12px; }
+  .scores { display: grid; grid-template-columns: 110px 1fr 28px; gap: 4px 8px; font-size: 12px; align-items: center; }
+  .bar { height: 7px; background: #e9ecf2; border-radius: 4px; overflow: hidden; }
+  .bar > span { display: block; height: 100%; border-radius: 4px; }
+  .pc { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; font-size: 13px; }
+  .pc ul { margin: 4px 0 0; padding-left: 18px; }
+  .pc h4 { margin: 0; font-size: 13px; }
+  .pro h4 { color: var(--good); } .con h4 { color: var(--bad); }
+  .tip { font-size: 13px; background: #eef7ee; border-left: 3px solid var(--good); padding: 6px 10px; border-radius: 6px; }
+  .warnbox { font-size: 13px; background: #fdf1ec; border-left: 3px solid var(--bad); padding: 6px 10px; border-radius: 6px; }
+  .cost { font-size: 13px; border-top: 1px dashed var(--line); padding-top: 8px; color: var(--muted); }
+  .cost b { color: var(--ink); }
+  .star { margin-left: auto; background: none; border: 0; font-size: 22px; cursor: pointer; color: #c3c9d4; }
+  .star.on { color: #f5b301; }
+  .titlerow { display: flex; align-items: center; gap: 8px; }
+  table { width: 100%; border-collapse: collapse; background: var(--card); border-radius: 12px; overflow: hidden;
+    font-size: 14px; }
+  th, td { padding: 9px 10px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: middle; }
+  th { background: #f0f3f8; cursor: pointer; user-select: none; white-space: nowrap; font-size: 13px; }
+  td.num { text-align: right; white-space: nowrap; }
+  td img { width: 92px; height: 56px; object-fit: cover; border-radius: 6px; }
+  tr:hover td { background: #fafbfd; }
+  .best { color: var(--good); font-weight: 700; }
+  section.ex { margin-top: 28px; }
+  section.ex h3 { margin-bottom: 8px; }
+  .exlist { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(280px, 100%), 1fr)); gap: 10px; }
+  .exitem { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; font-size: 13px; }
+  .exitem b { display: block; font-size: 14px; }
+  footer { max-width: 1320px; margin: 0 auto; padding: 10px 20px 40px; font-size: 12px; color: var(--muted); }
+  #lightbox { position: fixed; inset: 0; background: rgba(0,0,0,.85); display: none; align-items: center;
+    justify-content: center; z-index: 50; cursor: zoom-out; flex-direction: column; }
+  #lightbox img { max-width: 92vw; max-height: 82vh; border-radius: 8px; }
+  #lightbox div { color: #ddd; margin-top: 10px; font-size: 13px; }
+  .eqbtn { border: 1px solid var(--accent); color: var(--accent); background: #fff; border-radius: 8px; padding: 7px 12px;
+    font-size: 14px; cursor: pointer; font-weight: 600; }
+  .eqbtn:hover { background: var(--accent); color: #fff; }
+  .links { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+  .links a { font-size: 12.5px; text-decoration: none; color: var(--ink); border: 1px solid var(--line); border-radius: 999px;
+    padding: 4px 10px; background: #fafbfc; }
+  .links a:hover { border-color: var(--accent); color: var(--accent); }
+  #eqModal { position: fixed; inset: 0; background: rgba(10,15,30,.6); display: none; align-items: flex-start;
+    justify-content: center; z-index: 40; overflow-y: auto; padding: 30px 12px; }
+  #eqModal .box { background: #fff; border-radius: 14px; max-width: 1100px; width: 100%; padding: 20px 22px; position: relative; }
+  #eqModal .close { position: absolute; top: 10px; right: 14px; border: 0; background: none; font-size: 28px; cursor: pointer; color: var(--muted); }
+  #eqModal h2 { margin: 0 0 4px; }
+  .eqtable { font-size: 13px; border: 1px solid var(--line); }
+  .eqtable th, .eqtable td { text-align: center; padding: 6px 8px; cursor: default; }
+  .eqtable td:first-child, .eqtable th:first-child { text-align: left; white-space: nowrap; }
+  .eqtable th.rec { background: #fff3c4; }
+  .eqtable tr.grp td { background: #f0f3f8; font-weight: 700; text-align: left; }
+  .eqS { color: var(--good); font-weight: 700; } .eqO { color: var(--warn); } .eqN { color: #b0b6c2; } .eqQ { color: #b0b6c2; font-style: italic; }
+  .eqlegend { font-size: 12px; color: var(--muted); margin: 8px 0 12px; }
+  .hl { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 8px; margin: 12px 0; }
+  .hl div { background: var(--chip); border-radius: 8px; padding: 8px 10px; font-size: 13px; }
+  .hl div.rec { background: #fff3c4; }
+  .hidden { display: none !important; }
+  @media (max-width: 600px) {
+    header { padding: 20px max(14px, env(safe-area-inset-left)) 16px; }
+    header h1 { font-size: 21px; }
+    header p { font-size: 14px; }
+    main { padding: 12px max(10px, env(safe-area-inset-left)); }
+    .controls { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 12px; }
+    .controls label:first-child { grid-column: 1 / -1; }
+    .controls .check { align-self: end; padding-bottom: 10px; }
+    .controls input[type=range], .controls select, .controls input[type=number] { width: 100% !important; }
+    .controls select, .controls input[type=number] { font-size: 16px; } /* prevents iOS auto-zoom on focus */
+    .tabs button { flex: 1; padding: 10px; }
+    .body { padding: 12px; }
+    .pc { grid-template-columns: 1fr; }
+    .price .num { font-size: 16px; }
+    .scores { grid-template-columns: 96px 1fr 28px; }
+    .eqbtn { padding: 10px 12px; }
+    .links a { padding: 7px 11px; }
+    #eqModal { padding: 0; }
+    #eqModal .box { border-radius: 0; min-height: 100%; padding: 16px 12px max(16px, env(safe-area-inset-bottom)); }
+    #eqModal h2 { font-size: 19px; padding-right: 36px; }
+    #eqModal .close { position: sticky; float: right; top: 6px; background: #fff; border-radius: 50%; width: 40px; height: 40px; }
+    .eqtable tr:not(.grp) > td:first-child, .eqtable th:first-child { position: sticky; left: 0; background: #fff; z-index: 1;
+      white-space: normal; width: 100px; min-width: 100px; max-width: 100px; font-size: 12px;
+      box-shadow: 2px 0 4px rgba(0,0,0,.06); }
+    .eqtable { font-size: 12px; overflow: visible; border-collapse: separate; border-spacing: 0; }
+    .eqtable tr.grp td { white-space: nowrap; }
+    .eqtable .gl { position: sticky; left: 8px; }
+    .eqtable tr:not(.grp) > td:not(:first-child) { min-width: 130px; }
+  }
+  @media print { .controls, .tabs, .star, .imgtoggle { display: none !important; } .card { break-inside: avoid; } }
+</style>
+</head>
+<body>
+<header>
+  <h1>🚗 Kleinwagen-Vergleich: ≥ 100 PS · Schaltgetriebe</h1>
+  <p>Aktuelle europäische Kleinwagen, sortiert nach Empfehlung – Neupreis vs. Jahreswagen,
+     laufende Kosten, Langlebigkeit, Ausstattung. Filtern, sortieren, Favoriten markieren, Bilder per Klick vergrößern.</p>
+</header>
+
+<main>
+  <div class="note" id="dataNote"></div>
+
+  <div class="controls">
+    <label>Max. Budget <span class="val" id="budgetVal"></span>
+      <input type="range" id="budget" min="12000" max="35000" step="500" value="35000"></label>
+    <label>Preisbasis für Budget
+      <select id="basis"><option value="new">Neuwagen</option><option value="used">Jahreswagen</option></select></label>
+    <label>Sortieren nach
+      <select id="sort">
+        <option value="rank">Empfehlung (Ranking)</option>
+        <option value="used">Jahreswagen-Preis</option>
+        <option value="new">Neupreis</option>
+        <option value="fuel">Verbrauch</option>
+        <option value="tco">Kosten/Jahr (geschätzt)</option>
+        <option value="overall">Gesamtnote</option>
+        <option value="ps">Leistung</option>
+      </select></label>
+    <label>km pro Jahr <input type="number" id="km" value="12000" step="1000" min="1000" style="width:100px"></label>
+    <label>Benzinpreis €/l <input type="number" id="fuelPrice" value="1.75" step="0.05" style="width:80px"></label>
+    <label>Autogas €/l <input type="number" id="lpgPrice" value="0.95" step="0.05" style="width:80px"></label>
+    <label class="check"><input type="checkbox" id="onlyFav"> nur Favoriten ★</label>
+  </div>
+
+  <div class="tabs">
+    <button data-view="cards" class="active">Karten</button>
+    <button data-view="table">Vergleichstabelle</button>
+  </div>
+
+  <div id="cards" class="grid"></div>
+  <div id="tableView" class="hidden" style="overflow-x:auto;-webkit-overflow-scrolling:touch"><table id="tbl"></table></div>
+
+  <section class="ex">
+    <h3>Geprüft, aber ausgeschlossen (Kriterium ≥ 100 PS + Schaltgetriebe nicht erfüllt)</h3>
+    <div class="exlist" id="excluded"></div>
+  </section>
+
+  <section class="ex">
+    <h3>Worauf beim Kauf achten</h3>
+    <div class="exlist">
+      <div class="exitem"><b>Jahreswagen vs. Tageszulassung</b>Tageszulassungen/EU-Reimporte sind oft 20–30 % unter
+        Liste – bei Kleinwagen häufig das beste Preis-Leistungs-Verhältnis, mit voller Restgarantie.</div>
+      <div class="exitem"><b>Versicherung</b>Typklassen ändern sich jährlich. Vor dem Kauf beim GDV
+        (Typklassenabfrage) bzw. Vergleichsportal mit HSN/TSN des konkreten Modells prüfen.</div>
+      <div class="exitem"><b>Garantie</b>Hyundai: 5 Jahre ohne km-Limit; Dacia/Renault oft mit Verlängerungsoptionen;
+        bei Stellantis (Peugeot/Opel/Citroën) für PureTech-Motoren teils Kulanz-/Garantieverlängerung bei Wartung im Markennetz – nachfragen.</div>
+      <div class="exitem"><b>Scheckheft & Software</b>Beim Jahreswagen Wartungsnachweis und erledigte Rückrufe /
+        Software-Updates prüfen lassen (z.B. via VIN beim Händler).</div>
+    </div>
+  </section>
+</main>
+
+<footer id="footer"></footer>
+
+<div id="eqModal"><div class="box"><button class="close" title="Schließen">×</button><div id="eqContent"></div></div></div>
+<div id="lightbox"><img alt=""><div></div></div>
+
+<script>
+const IMG = f => "https://commons.wikimedia.org/wiki/Special:FilePath/" + encodeURIComponent(f) + "?width=1000";
+const COMMONS = f => "https://commons.wikimedia.org/wiki/File:" + encodeURIComponent(f.replace(/ /g, "_"));
+
+const DATA_STAND = "30.10.2026";
+
+/*
+ * Price, consumption and score values are researched estimates (see footer/note).
+ * Scores: 1 (schwach) … 5 (sehr gut). For "Versicherung" 5 = günstig.
+ */
+const CARS = [
+  {
+    id: "ibiza", rank: 1, links: {maker: "https://www.seat.de/modelle/seat-ibiza", adac: "https://www.adac.de/rund-ums-fahrzeug/autokatalog/marken-modelle/seat/ibiza/"}, name: "Seat Ibiza", cls: "Kleinwagen", gen: "Generation KJ/6F, Facelift seit 11/2025",
+    engine: "1.0 TSI", ps: 115, gearbox: "6-Gang manuell", fuel: "Benzin", l100: 5.2,
+    priceNew: 24150, trimNew: "Style (FR ab 27.110 €)",
+    priceUsed: [15700, 19700], usedMedian: 17200,
+    usedNote: "Jahreswagen (EZ 2025) ist noch der Vor-Facelift – aber mit gleichem 1.0 TSI 115 PS / 6-Gang. Technisch kaum Unterschied, optisch älter.",
+    typ: [13, 16, 20], pannen: "2,1 / 3,0 / 4,5 (EZ 2023/22/21) – sehr gut",
+    imgNew: "Seat Ibiza 6F Facelift IMG 0117 (cropped).jpg", imgUsed: "2018 SEAT Ibiza SE Technology MPi 1.0 Front.jpg",
+    imgUsedLabel: "Vor-Facelift (Jahreswagen)",
+    scores: { kosten: 3, verbrauch: 4, versicherung: 5, langlebigkeit: 5, ausstattung: 4, fahrspass: 5 },
+    pros: ["Top in der ADAC-Pannenstatistik (beste Werte im Vergleich)",
+           "Niedrige Typklassen (13/16/20) → günstige Versicherung",
+           "Bewährter VW-Konzernmotor, präzise 6-Gang-Schaltung, agiles Fahrwerk",
+           "Jahreswagen Vor-Facelift ~30 % unter Neupreis – gleiche Technik"],
+    cons: ["Innenraum mit viel Hartplastik",
+           "Straffe Federung, auf schlechten Straßen etwas unruhig",
+           "Neupreis inzwischen hoch (Style ab 24.150 €)"],
+    tip: "Preis-Leistungs-Tipp: Ibiza Vor-Facelift als Jahreswagen (~17.000 €) – Sieger bei Haltbarkeit + Versicherung.",
+  },
+  {
+    id: "fabia", rank: 2, links: {maker: "https://www.skoda-auto.de/modelle/fabia/fabia", adac: "https://www.adac.de/rund-ums-fahrzeug/autokatalog/marken-modelle/skoda/fabia/"}, name: "Škoda Fabia", cls: "Kleinwagen", gen: "Generation IV, seit 2021",
+    engine: "1.0 TSI", ps: 115, gearbox: "6-Gang manuell", fuel: "Benzin", l100: 5.0,
+    priceNew: 24660, trimNew: "Selection (Schalter nur Selection & Monte Carlo)",
+    priceUsed: [17000, 21100], usedMedian: 19400,
+    usedNote: "Gleiche Generation – Jahreswagen technisch identisch. Hält den Wert sehr gut (daher teurer als andere Jahreswagen).",
+    typ: [13, 17, 21], pannen: "3,8 / 4,1 / 6,1 (EZ 2023/22/21) – gut",
+    imgNew: "Škoda Fabia IV 1X7A7110 (cropped).jpg", imgUsed: null,
+    scores: { kosten: 3, verbrauch: 5, versicherung: 5, langlebigkeit: 4, ausstattung: 4, fahrspass: 3 },
+    pros: ["Größter Kofferraum der Klasse (380 l) – fast Golf-Niveau",
+           "Niedrigster Verbrauch im Vergleich (5,0 l WLTP)",
+           "Niedrige Typklassen, gute Pannenstatistik, hoher Wiederverkaufswert",
+           "Gleicher Motor wie Ibiza, komfortablere Abstimmung"],
+    cons: ["Teuerster Jahreswagen im Feld (geringer Wertverlust)",
+           "Neue Linie „Balance“ nur mit DSG – Schalter nur Selection/Monte Carlo",
+           "Optisch eher unauffällig"],
+    tip: "Vernunft-Tipp: Bester Mix aus Platz, Verbrauch und Werterhalt.",
+  },
+  {
+    id: "208", rank: 5, links: {maker: "https://www.peugeot.de/modelle/208.html", adac: "https://www.adac.de/rund-ums-fahrzeug/autokatalog/marken-modelle/peugeot/208/"}, name: "Peugeot 208", cls: "Kleinwagen", gen: "Generation II, Facelift; neuer Motor „Turbo 100“ seit 02/2026",
+    engine: "1.2 Turbo 100 (neu) / PureTech 100 (Jahreswagen)", ps: 101, gearbox: "6-Gang manuell", fuel: "Benzin", l100: 5.1,
+    priceNew: 25280, trimNew: "Style (Allure 26.280 €)",
+    priceUsed: [13700, 18000], usedMedian: 15500,
+    usedNote: "Jahreswagen hat noch den alten PureTech 100 mit Zahnriemen im Ölbad. Neuwagen ab 02/2026: Turbo 100 mit Steuerkette.",
+    typ: [18, 20, 21], pannen: "2,9 / 3,4 / 7,0 (EZ 2023/22/21) – gut",
+    imgNew: "Peugeot 208 PureTech 100 Allure (II, Facelift) – f 04092025.jpg", imgUsed: null,
+    scores: { kosten: 3, verbrauch: 4, versicherung: 3, langlebigkeit: 3, ausstattung: 4, fahrspass: 4 },
+    pros: ["Eigenständiges, hochwertiges Design (i-Cockpit, Krallen-LED)",
+           "Gute Ausstattung schon ab Style",
+           "Hoher Wertverlust = Jahreswagen ~40 % unter Liste",
+           "Neuwagen mit neuem Kettenmotor (Riemenproblem gelöst)"],
+    cons: ["Teuerster Neuwagen im Kleinwagen-Feld (25.280 €)",
+           "i-Cockpit (kleines Lenkrad, Instrumente darüber) passt nicht jedem",
+           "Höhere Typklassen (18/20/21)",
+           "Rücksitz und Kofferraum (311 l) eher knapp"],
+    warn: "Jahreswagen = PureTech mit Nassriemen: Zersetzung des Riemens ist ein bekanntes Problem. Wartungsnachweis, Riemenzustand und Stellantis-Garantieverlängerung prüfen – oder gezielt Neuwagen mit Turbo 100 (Kette) kaufen.",
+  },
+  {
+    id: "corsa", rank: 4, links: {maker: "https://www.opel.de/fahrzeuge/corsa-modelle/corsa/uebersicht.html", adac: "https://www.adac.de/rund-ums-fahrzeug/autokatalog/marken-modelle/opel/corsa/"}, name: "Opel Corsa", cls: "Kleinwagen", gen: "Generation F, Facelift 2024; Turbo 100 mit Kette seit 11/2025",
+    engine: "1.2 Turbo 100", ps: 100, gearbox: "6-Gang manuell", fuel: "Benzin", l100: 5.1,
+    priceNew: 23340, trimNew: "Edition (GS 25.690 €)",
+    priceUsed: [13500, 16400], usedMedian: 14000,
+    usedNote: "Riesiges Angebot (500+ Jahreswagen). Diese haben noch den 1.2 PureTech mit Nassriemen – Technik-Zwilling des 208.",
+    typ: [17, 19, 21], pannen: "2,2 / 2,9 / 6,1 (EZ 2023/22/21) – sehr gut",
+    imgNew: "Opel Corsa Electric Edition (F, Facelift) – f 05072025.jpg", imgUsed: "Opel Corsa F IMG 8196.jpg",
+    imgUsedLabel: "Vor-Facelift",
+    scores: { kosten: 5, verbrauch: 4, versicherung: 3, langlebigkeit: 3, ausstattung: 3, fahrspass: 3 },
+    pros: ["Günstigster Jahreswagen der „Großen“ (~14.000 €) und riesige Auswahl",
+           "Klassisches, bedienfreundliches Cockpit",
+           "Gute ADAC-Pannenstatistik bei jungen Jahrgängen",
+           "Neuwagen jetzt mit Kettenmotor"],
+    cons: ["Jahreswagen mit Nassriemen-PureTech (s. Hinweis)",
+           "Innenraum schlicht, viel Hartplastik",
+           "Platz hinten und Kofferraum (309 l) knapp"],
+    warn: "ADAC-Hinweis Rückruf: Riemenscheibe der Wasserpumpe kann durchrutschen → Riemen versetzt → Motorschaden (Bauzeitraum 06/2023–01/2026). Beim Jahreswagen Rückruf-Erledigung per FIN prüfen lassen!",
+  },
+  {
+    id: "clio", rank: 8, links: {maker: "https://www.renault.de/hybridfahrzeuge/clio.html", adac: "https://www.adac.de/rund-ums-fahrzeug/autokatalog/marken-modelle/renault/clio/"}, name: "Renault Clio", cls: "Kleinwagen", gen: "Neu: Clio VI (seit 01/2026) · Jahreswagen: Clio V",
+    engine: "TCe 115 (Clio VI) / ECO-G 100 Autogas (Clio V)", ps: 115, gearbox: "6-Gang manuell", fuel: "Benzin", l100: 5.1,
+    priceNew: 19900, trimNew: "evolution (techno 21.600 €)",
+    priceUsed: [17000, 20500], usedMedian: 19000,
+    usedNote: "Jahreswagen = noch Clio V. Mit ≥ 100 PS + Schaltung nur als ECO-G 100 (Benzin/Autogas). Kaum echte Jahreswagen, meist Tageszulassungen – und genauso teuer wie der neue Clio VI!",
+    typ: [18, 24, 21], pannen: "keine ADAC-Daten",
+    imgNew: "Renault Clio VI Auto Zuerich 2025 DSC 3205.jpg", imgUsed: "Renault Clio (V, Facelift) – f 02092025.jpg",
+    imgUsedLabel: "Clio V (Jahreswagen)",
+    scores: { kosten: 5, verbrauch: 4, versicherung: 2, langlebigkeit: 3, ausstattung: 4, fahrspass: 4 },
+    pros: ["Günstigster Neuwagen mit 115 PS + Schaltung (19.900 €)",
+           "Komplett neue Generation: modernes Design, Google-Infotainment",
+           "Steuerkette, sparsamer TCe 115",
+           "Clio V ECO-G (gebraucht): Autogas halbiert ca. die Spritkosten"],
+    cons: ["Hohe Vollkasko-Typklasse (24) → Vollkasko teurer",
+           "Clio VI ganz neu – keine Langzeit-/Pannendaten",
+           "Renault-Werkstattqualität regional schwankend"],
+    tip: "Neuwagen-Tipp: Der neue Clio VI kostet so viel wie ein Clio-V-Jahreswagen – hier lohnt sich neu.",
+    lpgUsed: true,
+  },
+  {
+    id: "c3", rank: 6, links: {maker: "https://www.citroen.de/modelle/c3.html", adac: "https://www.adac.de/rund-ums-fahrzeug/autokatalog/marken-modelle/citroen/c3/"}, name: "Citroën C3", cls: "Kleinwagen", gen: "Generation IV, seit 2024",
+    engine: "1.2 Turbo 100", ps: 101, gearbox: "6-Gang manuell", fuel: "Benzin", l100: 5.5,
+    priceNew: 16290, trimNew: "You (Basis, unverifiziert) · Plus ab 19.700 €",
+    priceUsed: [13300, 17000], usedMedian: 15000,
+    usedNote: "Jahreswagen meist schon C3 IV. Jahreswagen kaum günstiger als ein Neuwagen in Basisversion.",
+    typ: [18, 21, 17], pannen: "keine ADAC-Daten",
+    imgNew: "Citroën C3 (4th generation) DSC 7101.jpg", imgUsed: null,
+    scores: { kosten: 5, verbrauch: 3, versicherung: 3, langlebigkeit: 3, ausstattung: 3, fahrspass: 2 },
+    pros: ["Sehr günstiger Neupreis für 101 PS + 6-Gang",
+           "Sehr komfortabel: „Advanced Comfort“-Sitze, weiche Federung",
+           "Höhere Sitzposition, leichter Einstieg (SUV-Look)",
+           "Steuerkette (Turbo 100), niedrige Teilkasko-Einstufung"],
+    cons: ["Einfache Materialien, Basis „You“ sehr spartanisch",
+           "Weiche Abstimmung, wenig sportlich",
+           "Noch wenig Langzeiterfahrung"],
+    tip: "Komfort-Tipp: Als Neuwagen „Plus“ (19.700 €) ein guter Mittelweg.",
+  },
+  {
+    id: "sandero", rank: 3, links: {maker: "https://www.dacia.de/modelle/sandero-stadtauto.html", adac: "https://www.adac.de/rund-ums-fahrzeug/autokatalog/marken-modelle/dacia/sandero/"}, name: "Dacia Sandero", cls: "Kleinwagen", gen: "Generation III, Facelift seit 12/2025",
+    engine: "TCe 100 (Benzin)", ps: 100, gearbox: "6-Gang manuell", fuel: "Benzin", l100: 5.3,
+    priceNew: 13590, trimNew: "Essential (Expression 14.890 €, Journey 16.190 €)",
+    priceUsed: [16000, 19000], usedMedian: 17900,
+    usedNote: "Kaum echte Jahreswagen – überwiegend Tageszulassungen höherer Linien (Stepway, gemischt Benzin/Autogas). Neuwagen ist billiger!",
+    typ: [17, 16, 19], pannen: "keine ADAC-Daten",
+    imgNew: "Dacia Sandero Stepway (III, Facelift) – f 11102025.jpg", imgUsed: "2023 Dacia Sandero III DSC 6012.jpg",
+    imgUsedLabel: "Vor-Facelift",
+    scores: { kosten: 5, verbrauch: 4, versicherung: 4, langlebigkeit: 3, ausstattung: 2, fahrspass: 2 },
+    pros: ["Mit Abstand günstigster Neuwagen (ab 13.590 €)",
+           "Viel Platz für den Preis, simple Technik mit Steuerkette",
+           "Niedrigste Vollkasko-Typklasse im Vergleich (16)",
+           "Optional als Gasversion (siehe Hinweis) für niedrigste Spritkosten"],
+    cons: ["Einfache Materialien, weniger Dämmung",
+           "Mäßige Euro-NCAP-Bewertung, weniger Assistenten",
+           "Basislinie „Essential“ sehr spartanisch – Expression sinnvoller"],
+    tip: "Gas-Alternative: ECO-G 120 (Autogas/LPG + Benzin, 120 PS, 6-Gang) ab 14.790 € (Expression); in der Journey-Linie mit Extras für ca. 17.900 € zu haben – kaum Aufpreis, ~6,8 l LPG/100 km zu etwa halbem Literpreis, dafür kleinere Reserveradmulde und LPG-Tankstellen einplanen. Hinweis: Das ist Autogas (LPG), kein Erdgas (CNG).",
+    tip2: "Budget-Tipp: Neu kaufen – billiger als die angebotenen „Jahreswagen“.",
+  },
+  {
+    id: "i20", rank: 7, links: {maker: "https://www.hyundai.com/de/de/modelle/i20.html", adac: "https://www.adac.de/rund-ums-fahrzeug/autokatalog/marken-modelle/hyundai/i20/"}, name: "Hyundai i20", cls: "Kleinwagen", gen: "Generation III; Facelift seit 11/2025",
+    engine: "1.0 T-GDI", ps: 100, gearbox: "6-Gang manuell", fuel: "Benzin", l100: 5.4,
+    priceNew: 21900, trimNew: "Letzter Listenpreis Vor-Facelift (Select). Facelift-Select nur 90 PS – 100 PS + Schaltung beim Händler prüfen",
+    priceUsed: [15000, 18000], usedMedian: 16500,
+    usedNote: "Jahreswagen = Vor-Facelift mit 100 PS + 6-Gang. Restgarantie (5 J. ohne km-Limit) geht auf Käufer über.",
+    typ: [13, 20, 23], pannen: "7,2 / 14,8 / 22,5 (EZ 2023/22/21) – deutlich schlechter",
+    imgNew: "Hyundai i20 1.0 T-GDI Trend (III, Facelift) – f 09022025.jpg", imgUsed: null,
+    scores: { kosten: 4, verbrauch: 4, versicherung: 3, langlebigkeit: 2, ausstattung: 5, fahrspass: 3 },
+    pros: ["5 Jahre Garantie ohne Kilometerbegrenzung",
+           "Sehr umfangreiche Serienausstattung (Digitalcockpit, Assistenten)",
+           "Viel Platz, 352 l Kofferraum",
+           "Niedrige Haftpflicht-Typklasse (13)"],
+    cons: ["Schwächste ADAC-Pannenstatistik im Vergleich",
+           "Neu evtl. nur noch mit 90 PS als Schalter",
+           "Hohe Teilkasko-Typklasse (23)"],
+    warn: "Pannenstatistik deutlich schlechter als der Rest – die lange Garantie fängt das teilweise ab.",
+  },
+];
+
+const EXCLUDED = [
+  { name: "VW Polo", why: "1.0 TSI 115 PS nur mit DSG (Life ab 28.220 €). Schalter nur mit 95 PS / 5-Gang." },
+  { name: "Fiat Grande Panda", why: "Im ADAC-Katalog aktuell nur als Elektro bzw. Hybrid mit Doppelkupplung gelistet – kein Schalter ≥ 100 PS gefunden." },
+  { name: "Toyota Yaris", why: "Nur als Vollhybrid mit stufenloser Automatik (GR Yaris als Sportmodell außen vor)." },
+  { name: "MINI Cooper", why: "Aktuelle Generation nur mit Doppelkupplungsgetriebe." },
+  { name: "Suzuki Swift", why: "Nur 83 PS (Mildhybrid) – zu schwach." },
+  { name: "Ford Fiesta / Kia Rio", why: "In Europa 2023 ausgelaufen – nur noch ältere Gebrauchte." },
+  { name: "Mazda2", why: "Benziner < 100 PS; Hybrid (Yaris-Technik) nur Automatik." },
+];
+
+const EQUIP = {
+ "ibiza": {
+  "source": "https://www.seat.de/content/dam/countries/de/seat-website/download/pdf/model-range/Preisliste_SEAT_Ibiza_Doppel_21-07-2026.pdf (Preisliste Stand 21.07.2026); ADAC kj-facelift-2/346449",
+  "confidence": "mittel-hoch",
+  "recommended": "Style",
+  "note": "Empfehlung: Style + TECH-Paket (1.010 €); alternativ FR, wenn Fahrassistenz- und Komfortausstattung serienmäßig sein sollen",
+  "trims": [
+   {
+    "name": "Style",
+    "price": 24150,
+    "highlight": "Günstiger Einstieg mit 16\"-Alufelgen, manueller Klimaanlage und Parksensoren hinten, aber viele Komfortextras kosten Aufpreis. Das Style TECH-Paket (1.010 €) bringt 9,2\"-Navi, Full Link, induktives Laden, Mittelarmlehne und Climatronic.",
+    "features": {
+     "klima": "M/S (Climatronic O 630 € oder im TECH-Paket)",
+     "tempomat": "S (einfach); ACC O 320 € (Fahrassistenz-Paket M)",
+     "parkpiepser_hinten": "S",
+     "parkpiepser_vorne": "O 160 €",
+     "rueckfahrkamera": "O (PCK: Sensoren vorn + Kamera 565 €)",
+     "digitalcockpit": "S 8\" (10,25\" Virtual Cockpit: nicht verfügbar)",
+     "touchscreen": "S 8,25\"; 9,2\" O 540 €",
+     "navi": "O 1.270 € oder TECH-Paket",
+     "carplay": "O Full Link 255 € (kabelloses Apple CarPlay); im TECH-Paket",
+     "led_scheinwerfer": "O 200 € (LED Signature); Nebelscheinwerfer O 250 €",
+     "alufelgen": "S 16\"",
+     "sitzheizung": "O über Winter-Paket 550 € (Spiegel, höhenverstellbare Sitze, Sitzheizung)",
+     "lenkradheizung": "?",
+     "keyless": "O 395 €",
+     "spurhalte": "S (Travel Assist/Stauassistent nur im XL-Paket)",
+     "notbrems": "S",
+     "verkehrszeichen": "S",
+     "totwinkel": "O (Fahrassistenz-Paket XL 670 €)",
+     "regensensor": "S",
+     "fenster_hinten": "O (Trend-Paket 565 €)",
+     "getoente_scheiben": "O 280 €",
+     "mittelarmlehne": "O (Ablagen-Paket 660 € oder TECH-Paket)",
+     "induktives_laden": "O (Ablagen-Paket 660 € oder TECH-Paket)",
+     "sportsitze": "-"
+    }
+   },
+   {
+    "name": "FR",
+    "price": 27110,
+    "highlight": "Sportliche Linie mit Climatronic, ACC, Travel Assist, Totwinkel-Assistent, Parksensoren vorn/hinten mit Kamera, getönten hinteren Scheiben und hinteren elektrischen Fensterhebern in Serie. Es fehlen Keyless, Sitzheizung (Aufpreis) und ein größeres Cockpit.",
+    "features": {
+     "klima": "A/S",
+     "tempomat": "S ACC (Fahrassistenz-Paket XL inklusive)",
+     "parkpiepser_hinten": "S",
+     "parkpiepser_vorne": "S",
+     "rueckfahrkamera": "S",
+     "digitalcockpit": "S 8\" (10,25\" O 350 €)",
+     "touchscreen": "S 8,25\"; 9,2\" O 540 €",
+     "navi": "O 1.270 €",
+     "carplay": "O Full Link 255 € (kabellos)",
+     "led_scheinwerfer": "S",
+     "alufelgen": "S 16\" (17\" O 280-545 €, 18\" O 545 €)",
+     "sitzheizung": "O 345 €",
+     "lenkradheizung": "?",
+     "keyless": "O 395 €",
+     "spurhalte": "S inkl. Travel Assist",
+     "notbrems": "S",
+     "verkehrszeichen": "S",
+     "totwinkel": "S",
+     "regensensor": "S",
+     "fenster_hinten": "S",
+     "getoente_scheiben": "S",
+     "mittelarmlehne": "O (Ablagen-Paket 660 €)",
+     "induktives_laden": "O (Ablagen-Paket 660 €)",
+     "sportsitze": "O Sportschalensitze 605 €"
+    }
+   },
+   {
+    "name": "FR Black Edition",
+    "price": 30460,
+    "highlight": "Voll ausgestattet: 18\"-Alufelgen, 10,25\" Virtual Cockpit, 9,2\"-Navi mit Full Link, induktives Laden, Mittelarmlehne und Sportschalensitze in Serie. Sitzheizung und Keyless kosten weiterhin Aufpreis.",
+    "features": {
+     "klima": "A/S",
+     "tempomat": "S ACC",
+     "parkpiepser_hinten": "S",
+     "parkpiepser_vorne": "S",
+     "rueckfahrkamera": "S",
+     "digitalcockpit": "S 10,25\"",
+     "touchscreen": "S 9,2\"",
+     "navi": "S",
+     "carplay": "S (Full Link)",
+     "led_scheinwerfer": "S",
+     "alufelgen": "S 18\"",
+     "sitzheizung": "O 345 €",
+     "lenkradheizung": "?",
+     "keyless": "O 395 €",
+     "spurhalte": "S",
+     "notbrems": "S",
+     "verkehrszeichen": "S",
+     "totwinkel": "S",
+     "regensensor": "S",
+     "fenster_hinten": "S",
+     "getoente_scheiben": "S",
+     "mittelarmlehne": "S",
+     "induktives_laden": "S",
+     "sportsitze": "S"
+    }
+   }
+  ]
+ },
+ "fabia": {
+  "source": "https://www.skoda-auto.de/_doc/365916b0-3159-4193-81a9-48f67ea8b02b (Preisliste Stand 15.10.2026); ADAC skoda/fabia/4generation/343656",
+  "confidence": "mittel",
+  "recommended": "Selection",
+  "note": "Empfehlung: Selection mit Infotainment- und Park-Paket, oder Monte Carlo, wenn sportliche Optik wichtig ist",
+  "trims": [
+   {
+    "name": "Selection",
+    "price": 24910,
+    "highlight": "Gut ausgestattete Basislinie, aber Alufelgen, Rückfahrkamera, Navi/digitales Cockpit und Heizungen kosten Aufpreis. Der Listenpreis stieg von 24.660 € (ADAC) auf 24.910 € in der Preisliste vom Okt. 2026.",
+    "features": {
+     "klima": "M/S (Climatronic O 390 €)",
+     "tempomat": "S (einfach); ACC O 320 €",
+     "parkpiepser_hinten": "S",
+     "parkpiepser_vorne": "O (Paket Parken 760 €)",
+     "rueckfahrkamera": "O (Paket Parken 760 €)",
+     "digitalcockpit": "O 10\" (Infotainment-Paket 1.350 €)",
+     "touchscreen": "S 8,2\"",
+     "navi": "O (Infotainment-Paket 1.350 €, 9,2\")",
+     "carplay": "S kabelgebunden (kabellos nur mit Navi)",
+     "led_scheinwerfer": "S",
+     "alufelgen": "O 15\" 610 € / 16\" 1.080 €; S: 15\" Stahl",
+     "sitzheizung": "O 370 €",
+     "lenkradheizung": "O 140 € (benötigt Climatronic)",
+     "keyless": "O (KESSY im Paket Parken)",
+     "spurhalte": "S",
+     "notbrems": "S",
+     "verkehrszeichen": "?",
+     "totwinkel": "O 720 €",
+     "regensensor": "O (Licht und Sicht 400 €)",
+     "fenster_hinten": "S",
+     "getoente_scheiben": "O 240 €",
+     "mittelarmlehne": "S (abgeleitet, ungeprüft)",
+     "induktives_laden": "O 350 €",
+     "sportsitze": "-"
+    }
+   },
+   {
+    "name": "Monte Carlo",
+    "price": 28560,
+    "highlight": "Sportsitze, schwarze 16\"-Alufelgen, KESSY, Rückfahrkamera sowie Parksensoren vorn/hinten in Serie; es sind weniger Zusatzpakete nötig. Der Listenpreis stieg von 28.310 € auf 28.560 €.",
+    "features": {
+     "klima": "A/S (aus Preisliste abgeleitet)",
+     "tempomat": "S (einfach); ACC O 320 €",
+     "parkpiepser_hinten": "S",
+     "parkpiepser_vorne": "S",
+     "rueckfahrkamera": "S",
+     "digitalcockpit": "O 10\" (Infotainment-Paket 1.350 €)",
+     "touchscreen": "S 8,2\"",
+     "navi": "O (Infotainment-Paket)",
+     "carplay": "S kabelgebunden",
+     "led_scheinwerfer": "S",
+     "alufelgen": "S 16\"",
+     "sitzheizung": "?",
+     "lenkradheizung": "O 140 € (beheiztes Sportlenkrad)",
+     "keyless": "S",
+     "spurhalte": "S",
+     "notbrems": "S",
+     "verkehrszeichen": "?",
+     "totwinkel": "O 720 €",
+     "regensensor": "O (Licht und Sicht 350 €)",
+     "fenster_hinten": "?",
+     "getoente_scheiben": "O 240 €",
+     "mittelarmlehne": "?",
+     "induktives_laden": "O 350 €",
+     "sportsitze": "S"
+    }
+   }
+  ]
+ },
+ "corsa": {
+  "source": "ADAC opel/corsa/f-facelift 346666/346667/346665/346668 only (Opel site returned 403)",
+  "confidence": "niedrig",
+  "recommended": "GS",
+  "note": "Empfehlung: GS (Rückfahrkamera, Parksensoren vorn/hinten und Totwinkel-Assistent serienmäßig); YES als Budget-Option · Viele Angaben konnten nicht verifiziert werden (Herstellerseiten gesperrt) – bitte im Konfigurator prüfen",
+  "trims": [
+   {
+    "name": "Edition",
+    "price": 23340,
+    "highlight": "Basislinie mit LED-Scheinwerfern, Regensensor, Spurhalteassistent und 10\"-Multimedia-Radio. Stahlfelgen, nur Parksensoren hinten, kein Navi.",
+    "features": {
+     "klima": "?",
+     "tempomat": "?",
+     "parkpiepser_hinten": "S",
+     "parkpiepser_vorne": "-",
+     "rueckfahrkamera": "-",
+     "digitalcockpit": "?",
+     "touchscreen": "S 10\"",
+     "navi": "-",
+     "carplay": "S (kabelgebunden/kabellos unbekannt)",
+     "led_scheinwerfer": "S",
+     "alufelgen": "O 600 € (16\" Stahl: S)",
+     "sitzheizung": "?",
+     "lenkradheizung": "?",
+     "keyless": "?",
+     "spurhalte": "S",
+     "notbrems": "?",
+     "verkehrszeichen": "S",
+     "totwinkel": "O (Spurwechselassistent)",
+     "regensensor": "S",
+     "fenster_hinten": "?",
+     "getoente_scheiben": "?",
+     "mittelarmlehne": "?",
+     "induktives_laden": "?",
+     "sportsitze": "?"
+    }
+   },
+   {
+    "name": "YES",
+    "price": 24790,
+    "highlight": "Edition plus serienmäßige Alufelgen. Weiterhin nur Parksensoren hinten und keine Kamera.",
+    "features": {
+     "klima": "?",
+     "tempomat": "?",
+     "parkpiepser_hinten": "S",
+     "parkpiepser_vorne": "-",
+     "rueckfahrkamera": "-",
+     "digitalcockpit": "?",
+     "touchscreen": "S 10\"",
+     "navi": "-",
+     "carplay": "S",
+     "led_scheinwerfer": "S",
+     "alufelgen": "S",
+     "sitzheizung": "?",
+     "lenkradheizung": "?",
+     "keyless": "?",
+     "spurhalte": "S",
+     "notbrems": "?",
+     "verkehrszeichen": "S",
+     "totwinkel": "O",
+     "regensensor": "S",
+     "fenster_hinten": "?",
+     "getoente_scheiben": "?",
+     "mittelarmlehne": "?",
+     "induktives_laden": "?",
+     "sportsitze": "?"
+    }
+   },
+   {
+    "name": "GS",
+    "price": 25690,
+    "highlight": "Rückfahrkamera, Parksensoren vorn/hinten, Nebelscheinwerfer und Totwinkel-Assistent in Serie. Navi, induktives Laden und ACC gibt es in Paketen.",
+    "features": {
+     "klima": "?",
+     "tempomat": "O ACC (Paket)",
+     "parkpiepser_hinten": "S",
+     "parkpiepser_vorne": "S",
+     "rueckfahrkamera": "S",
+     "digitalcockpit": "?",
+     "touchscreen": "S 10\"",
+     "navi": "O (Paket)",
+     "carplay": "S",
+     "led_scheinwerfer": "S",
+     "alufelgen": "S",
+     "sitzheizung": "?",
+     "lenkradheizung": "?",
+     "keyless": "?",
+     "spurhalte": "S",
+     "notbrems": "?",
+     "verkehrszeichen": "S",
+     "totwinkel": "S",
+     "regensensor": "S",
+     "fenster_hinten": "?",
+     "getoente_scheiben": "?",
+     "mittelarmlehne": "?",
+     "induktives_laden": "O (Paket)",
+     "sportsitze": "?"
+    }
+   },
+   {
+    "name": "Ultimate",
+    "price": 28290,
+    "highlight": "GS plus serienmäßiges Navi; teuerste und am besten ausgestattete Version. Induktives Laden ist ein Paket.",
+    "features": {
+     "klima": "?",
+     "tempomat": "?",
+     "parkpiepser_hinten": "S",
+     "parkpiepser_vorne": "S",
+     "rueckfahrkamera": "S",
+     "digitalcockpit": "?",
+     "touchscreen": "S 10\"",
+     "navi": "S",
+     "carplay": "S",
+     "led_scheinwerfer": "S",
+     "alufelgen": "S",
+     "sitzheizung": "?",
+     "lenkradheizung": "?",
+     "keyless": "?",
+     "spurhalte": "S",
+     "notbrems": "?",
+     "verkehrszeichen": "S",
+     "totwinkel": "S",
+     "regensensor": "S",
+     "fenster_hinten": "?",
+     "getoente_scheiben": "?",
+     "mittelarmlehne": "?",
+     "induktives_laden": "O (Paket)",
+     "sportsitze": "?"
+    }
+   }
+  ]
+ },
+ "208": {
+  "source": "ADAC peugeot/208/2generation-facelift 349388/349389/349390 only (Peugeot site returned 403)",
+  "confidence": "niedrig",
+  "recommended": "Allure",
+  "note": "Empfehlung: Allure (Alufelgen, Parksensoren vorn/hinten; Navi und ACC als Pakete) · Viele Angaben konnten nicht verifiziert werden (Herstellerseiten gesperrt) – bitte im Konfigurator prüfen",
+  "trims": [
+   {
+    "name": "Style",
+    "price": 24480,
+    "highlight": "Basislinie mit 16\"-Rädern, Parksensoren hinten und LED-Licht; nur Audio. Hinweis: Der genannte Preis von 25.280 € gehört zu Business; Style kostet 24.480 € (ADAC).",
+    "features": {
+     "klima": "?",
+     "tempomat": "?",
+     "parkpiepser_hinten": "S",
+     "parkpiepser_vorne": "-",
+     "rueckfahrkamera": "-",
+     "digitalcockpit": "?",
+     "touchscreen": "?",
+     "navi": "-",
+     "carplay": "S",
+     "led_scheinwerfer": "S",
+     "alufelgen": "? (16\")",
+     "sitzheizung": "?",
+     "lenkradheizung": "?",
+     "keyless": "?",
+     "spurhalte": "?",
+     "notbrems": "?",
+     "verkehrszeichen": "?",
+     "totwinkel": "-",
+     "regensensor": "?",
+     "fenster_hinten": "?",
+     "getoente_scheiben": "?",
+     "mittelarmlehne": "?",
+     "induktives_laden": "?",
+     "sportsitze": "?"
+    }
+   },
+   {
+    "name": "Business",
+    "price": 25280,
+    "highlight": "Style plus Rückfahrkamera und i-Connect.",
+    "features": {
+     "klima": "?",
+     "tempomat": "?",
+     "parkpiepser_hinten": "S",
+     "parkpiepser_vorne": "-",
+     "rueckfahrkamera": "S",
+     "digitalcockpit": "?",
+     "touchscreen": "?",
+     "navi": "?",
+     "carplay": "S",
+     "led_scheinwerfer": "S",
+     "alufelgen": "?",
+     "sitzheizung": "?",
+     "lenkradheizung": "?",
+     "keyless": "?",
+     "spurhalte": "?",
+     "notbrems": "?",
+     "verkehrszeichen": "?",
+     "totwinkel": "?",
+     "regensensor": "?",
+     "fenster_hinten": "?",
+     "getoente_scheiben": "?",
+     "mittelarmlehne": "?",
+     "induktives_laden": "?",
+     "sportsitze": "?"
+    }
+   },
+   {
+    "name": "Allure",
+    "price": 26280,
+    "highlight": "Alufelgen, Parksensoren vorn und hinten. Navi, ACC und Totwinkel-Assistent sind Pakete. Kein GT mit Schaltgetriebe gefunden (Hybrid 110 nur als Automatik).",
+    "features": {
+     "klima": "?",
+     "tempomat": "O ACC (Paket)",
+     "parkpiepser_hinten": "S",
+     "parkpiepser_vorne": "S",
+     "rueckfahrkamera": "?",
+     "digitalcockpit": "?",
+     "touchscreen": "?",
+     "navi": "O (Paket)",
+     "carplay": "S",
+     "led_scheinwerfer": "S",
+     "alufelgen": "S",
+     "sitzheizung": "?",
+     "lenkradheizung": "?",
+     "keyless": "?",
+     "spurhalte": "?",
+     "notbrems": "?",
+     "verkehrszeichen": "?",
+     "totwinkel": "O (Paket)",
+     "regensensor": "?",
+     "fenster_hinten": "?",
+     "getoente_scheiben": "?",
+     "mittelarmlehne": "?",
+     "induktives_laden": "?",
+     "sportsitze": "?"
+    }
+   }
+  ]
+ },
+ "c3": {
+  "source": "ADAC citroen/c3/4generation 346630/346631/350751/346632 only (Citroën site returned 403)",
+  "confidence": "niedrig",
+  "recommended": "Collection",
+  "note": "Empfehlung: Collection (Alufelgen, Rückfahrkamera, hintere elektrische Fensterheber für 20.600 €) oder Plus als günstigere Option · Viele Angaben konnten nicht verifiziert werden (Herstellerseiten gesperrt) – bitte im Konfigurator prüfen",
+  "trims": [
+   {
+    "name": "You",
+    "price": 16290,
+    "highlight": "Geprüft: You gibt es mit dem Turbo 100 Schaltgetriebe für 16.290 € (ADAC 346630). Sehr einfach: 16\"-Stahlfelgen, kein LED, keine Smartphone-Integration aufgeführt, keine Kamera.",
+    "features": {
+     "klima": "?",
+     "tempomat": "?",
+     "parkpiepser_hinten": "S",
+     "parkpiepser_vorne": "-",
+     "rueckfahrkamera": "-",
+     "digitalcockpit": "?",
+     "touchscreen": "?",
+     "navi": "-",
+     "carplay": "-",
+     "led_scheinwerfer": "-",
+     "alufelgen": "- (16\" Stahl)",
+     "sitzheizung": "?",
+     "lenkradheizung": "?",
+     "keyless": "?",
+     "spurhalte": "S",
+     "notbrems": "S",
+     "verkehrszeichen": "S",
+     "totwinkel": "?",
+     "regensensor": "-",
+     "fenster_hinten": "?",
+     "getoente_scheiben": "?",
+     "mittelarmlehne": "?",
+     "induktives_laden": "-",
+     "sportsitze": "?"
+    }
+   },
+   {
+    "name": "Plus",
+    "price": 19700,
+    "highlight": "Ergänzt LED-Licht, Smartphone-Integration und induktives Laden. 17\"-Räder (Alufelgen-Status ungeprüft).",
+    "features": {
+     "klima": "?",
+     "tempomat": "?",
+     "parkpiepser_hinten": "S",
+     "parkpiepser_vorne": "-",
+     "rueckfahrkamera": "?",
+     "digitalcockpit": "?",
+     "touchscreen": "?",
+     "navi": "?",
+     "carplay": "S",
+     "led_scheinwerfer": "S",
+     "alufelgen": "? (17\")",
+     "sitzheizung": "?",
+     "lenkradheizung": "?",
+     "keyless": "?",
+     "spurhalte": "S",
+     "notbrems": "S",
+     "verkehrszeichen": "S",
+     "totwinkel": "?",
+     "regensensor": "?",
+     "fenster_hinten": "?",
+     "getoente_scheiben": "?",
+     "mittelarmlehne": "?",
+     "induktives_laden": "S",
+     "sportsitze": "?"
+    }
+   },
+   {
+    "name": "Collection",
+    "price": 20600,
+    "highlight": "Plus plus hintere elektrische Fensterheber, Rückfahrkamera und Alufelgen; ab 04/26.",
+    "features": {
+     "klima": "?",
+     "tempomat": "?",
+     "parkpiepser_hinten": "S",
+     "parkpiepser_vorne": "-",
+     "rueckfahrkamera": "S",
+     "digitalcockpit": "?",
+     "touchscreen": "?",
+     "navi": "?",
+     "carplay": "S",
+     "led_scheinwerfer": "S",
+     "alufelgen": "S 17\"",
+     "sitzheizung": "?",
+     "lenkradheizung": "?",
+     "keyless": "?",
+     "spurhalte": "S",
+     "notbrems": "S",
+     "verkehrszeichen": "S",
+     "totwinkel": "?",
+     "regensensor": "?",
+     "fenster_hinten": "S",
+     "getoente_scheiben": "?",
+     "mittelarmlehne": "?",
+     "induktives_laden": "S",
+     "sportsitze": "?"
+    }
+   },
+   {
+    "name": "Max",
+    "price": 21700,
+    "highlight": "Plus plus Regensensor, Navi, Rückfahrkamera und Alufelgen. Außerdem erhältlich: Team D 22.190 € und Outdoor 23.200 €.",
+    "features": {
+     "klima": "?",
+     "tempomat": "?",
+     "parkpiepser_hinten": "S",
+     "parkpiepser_vorne": "-",
+     "rueckfahrkamera": "S",
+     "digitalcockpit": "?",
+     "touchscreen": "?",
+     "navi": "S",
+     "carplay": "S",
+     "led_scheinwerfer": "S",
+     "alufelgen": "S 17\"",
+     "sitzheizung": "?",
+     "lenkradheizung": "?",
+     "keyless": "?",
+     "spurhalte": "S",
+     "notbrems": "S",
+     "verkehrszeichen": "S",
+     "totwinkel": "?",
+     "regensensor": "S",
+     "fenster_hinten": "?",
+     "getoente_scheiben": "?",
+     "mittelarmlehne": "?",
+     "induktives_laden": "S",
+     "sportsitze": "?"
+    }
+   }
+  ]
+ },
+ "sandero": {
+  "source": "https://www.dacia.de/modelle/sandero-stadtauto/ausstattung.html?gradeCode=ENS_MDL2P1SERIELIM1..3; ADAC dacia/sandero/3generation-facelift 347804/347807",
+  "confidence": "mittel-hoch",
+  "recommended": "Expression",
+  "note": "Empfehlung: Expression (Klimaanlage, hintere elektrische Fensterheber, 10\"-Bildschirm, Armlehne für 14.890 €)",
+  "trims": [
+   {
+    "name": "Essential",
+    "price": 13590,
+    "highlight": "Am günstigsten, aber spartanisch: keine Klimaanlage (manuelle Klimaanlage laut Berichten 800 € Aufpreis), Stahlfelgen. Das Sicherheitspaket (Notbremsassistent, Spurhalteassistent, Verkehrszeichenerkennung, Tempopilot, LED-Abblendlicht, Licht-/Regensensor) ist Serie. Nur Media Control (smartphonebasiert).",
+    "features": {
+     "klima": "- (O manuelle Klimaanlage 800 €, laut ADAC)",
+     "tempomat": "S (Tempopilot einfach)",
+     "parkpiepser_hinten": "S",
+     "parkpiepser_vorne": "-",
+     "rueckfahrkamera": "?",
+     "digitalcockpit": "? (7\"-Display auf Modellseite erwähnt, Linie ungeprüft)",
+     "touchscreen": "-",
+     "navi": "-",
+     "carplay": "O (Smartphone über Media Control; kabelgebunden/kabellos unbekannt)",
+     "led_scheinwerfer": "S (LED-Abblendlicht)",
+     "alufelgen": "- (15\" Stahl)",
+     "sitzheizung": "-",
+     "lenkradheizung": "-",
+     "keyless": "-",
+     "spurhalte": "S",
+     "notbrems": "S",
+     "verkehrszeichen": "S",
+     "totwinkel": "-",
+     "regensensor": "S",
+     "fenster_hinten": "?",
+     "getoente_scheiben": "?",
+     "mittelarmlehne": "?",
+     "induktives_laden": "?",
+     "sportsitze": "-"
+    }
+   },
+   {
+    "name": "Expression",
+    "price": 14890,
+    "highlight": "Bestes Preis-Leistungs-Verhältnis: manuelle Klimaanlage, hintere elektrische Fensterheber, 10\" Media Display, Parksensoren hinten, Armlehne und das komplette Sicherheitspaket. Kamera und Navi sind Extras.",
+    "features": {
+     "klima": "M/S",
+     "tempomat": "S (Tempopilot einfach)",
+     "parkpiepser_hinten": "S",
+     "parkpiepser_vorne": "-",
+     "rueckfahrkamera": "O",
+     "digitalcockpit": "-",
+     "touchscreen": "S 10\"",
+     "navi": "O (Media Nav Live, ca. 500 € laut ADAC)",
+     "carplay": "S (kabelgebunden/kabellos unbekannt)",
+     "led_scheinwerfer": "S (LED-Abblendlicht; Nebelscheinwerfer ? laut Dacia-Seite)",
+     "alufelgen": "? (vermutlich Stahl/Radkappen)",
+     "sitzheizung": "- (Winterpaket O: Inhalt ungeprüft)",
+     "lenkradheizung": "-",
+     "keyless": "-",
+     "spurhalte": "S",
+     "notbrems": "S",
+     "verkehrszeichen": "S",
+     "totwinkel": "-",
+     "regensensor": "S",
+     "fenster_hinten": "S",
+     "getoente_scheiben": "?",
+     "mittelarmlehne": "S (erhöhte Mittelkonsole mit Armlehne)",
+     "induktives_laden": "?",
+     "sportsitze": "-"
+    }
+   },
+   {
+    "name": "Journey",
+    "price": 16190,
+    "highlight": "Klimaautomatik, Keycard Handsfree, digitales 7\"-Display, Parksensoren vorn+hinten, Kamera, Totwinkel-Assistent, Nebelscheinwerfer, 16\"-Alufelgen und elektrische Parkbremse in Serie.",
+    "features": {
+     "klima": "A/S",
+     "tempomat": "S (Tempopilot einfach)",
+     "parkpiepser_hinten": "S",
+     "parkpiepser_vorne": "S",
+     "rueckfahrkamera": "S",
+     "digitalcockpit": "S 7\"",
+     "touchscreen": "S 10\"",
+     "navi": "O (Media Nav / Technik-Paket)",
+     "carplay": "S (kabelgebunden/kabellos unbekannt)",
+     "led_scheinwerfer": "S (LED-Abblendlicht)",
+     "alufelgen": "S 16\"",
+     "sitzheizung": "O (Winter-Komfortpaket)",
+     "lenkradheizung": "O (Winter-Komfortpaket, ungeprüft)",
+     "keyless": "S (Keycard Handsfree)",
+     "spurhalte": "S",
+     "notbrems": "S",
+     "verkehrszeichen": "S",
+     "totwinkel": "S",
+     "regensensor": "S",
+     "fenster_hinten": "S",
+     "getoente_scheiben": "?",
+     "mittelarmlehne": "S",
+     "induktives_laden": "O (Technik-Paket, laut ADAC)",
+     "sportsitze": "-"
+    }
+   }
+  ]
+ },
+ "i20": {
+  "source": "https://www.hyundai.com/de/de/preislisten/i20.html (price list PDF); ADAC hyundai/i20/3generation-facelift/346925",
+  "confidence": "mittel-hoch",
+  "recommended": "Trend",
+  "note": "Empfehlung: Trend (16\"-Alufelgen, LED, digitales Cockpit, Sitz- und Lenkradheizung, induktives Laden) · Alle i20-Ausstattungslinien mit Schaltgetriebe haben derzeit nur 90 PS (1.0 T-GDI); die 100-PS-Version gibt es nur als Jahreswagen (vor dem Facelift)",
+  "trims": [
+   {
+    "name": "Select",
+    "price": 21950,
+    "highlight": "Nicht 100 PS: Der 1.0 T-GDI mit Schaltgetriebe hat nur 90 PS. Basislinie mit 10,3\"-Navi-Bildschirm, Parksensoren hinten, Kamera und Sicherheitspaket, aber Halogenlicht und Stahlfelgen; keine Heizungen, kein digitales Cockpit.",
+    "features": {
+     "klima": "M/S",
+     "tempomat": "S (einfach)",
+     "parkpiepser_hinten": "S",
+     "parkpiepser_vorne": "-",
+     "rueckfahrkamera": "S",
+     "digitalcockpit": "-",
+     "touchscreen": "S 10,3\"",
+     "navi": "S (mit Bluelink)",
+     "carplay": "S kabelgebunden",
+     "led_scheinwerfer": "- (Halogen)",
+     "alufelgen": "- (15\" Stahl)",
+     "sitzheizung": "-",
+     "lenkradheizung": "-",
+     "keyless": "-",
+     "spurhalte": "S",
+     "notbrems": "S",
+     "verkehrszeichen": "S",
+     "totwinkel": "-",
+     "regensensor": "S (Lichtsensor; Regensensor -)",
+     "fenster_hinten": "S",
+     "getoente_scheiben": "-",
+     "mittelarmlehne": "-",
+     "induktives_laden": "-",
+     "sportsitze": "-"
+    }
+   },
+   {
+    "name": "Trend",
+    "price": 24450,
+    "highlight": "Großer Komfortsprung: 16\"-Alufelgen, Voll-LED, digitales 10,3\"-Cockpit, Sitz- und Lenkradheizung, Armlehne und induktives Laden. Das Komfort-Paket (750 €) ergänzt Klimaautomatik, Regensensor und Smart-Key.",
+    "features": {
+     "klima": "M/S (Klimaautomatik über Komfort-Paket 750 €)",
+     "tempomat": "S (einfach)",
+     "parkpiepser_hinten": "S",
+     "parkpiepser_vorne": "-",
+     "rueckfahrkamera": "S",
+     "digitalcockpit": "S 10,3\"",
+     "touchscreen": "S 10,3\"",
+     "navi": "S",
+     "carplay": "S kabelgebunden",
+     "led_scheinwerfer": "S",
+     "alufelgen": "S 16\"",
+     "sitzheizung": "S",
+     "lenkradheizung": "S",
+     "keyless": "O (Komfort-Paket 750 €)",
+     "spurhalte": "S",
+     "notbrems": "S",
+     "verkehrszeichen": "S",
+     "totwinkel": "-",
+     "regensensor": "O (Komfort-Paket)",
+     "fenster_hinten": "S",
+     "getoente_scheiben": "-",
+     "mittelarmlehne": "S",
+     "induktives_laden": "S",
+     "sportsitze": "-"
+    }
+   },
+   {
+    "name": "Blackline",
+    "price": 25450,
+    "highlight": "Trend plus schwarze 16\"-Alufelgen, BOSE-Sound, Privacy-Verglasung und schwarzes Styling.",
+    "features": {
+     "klima": "M/S (Klimaautomatik über Komfort-Paket 750 €)",
+     "tempomat": "S (einfach)",
+     "parkpiepser_hinten": "S",
+     "parkpiepser_vorne": "-",
+     "rueckfahrkamera": "S",
+     "digitalcockpit": "S 10,3\"",
+     "touchscreen": "S 10,3\"",
+     "navi": "S",
+     "carplay": "S kabelgebunden",
+     "led_scheinwerfer": "S",
+     "alufelgen": "S 16\" schwarz",
+     "sitzheizung": "S",
+     "lenkradheizung": "S",
+     "keyless": "O (Komfort-Paket 750 €)",
+     "spurhalte": "S",
+     "notbrems": "S",
+     "verkehrszeichen": "S",
+     "totwinkel": "-",
+     "regensensor": "O (Komfort-Paket)",
+     "fenster_hinten": "S",
+     "getoente_scheiben": "S",
+     "mittelarmlehne": "S",
+     "induktives_laden": "S",
+     "sportsitze": "-"
+    }
+   },
+   {
+    "name": "Prime",
+    "price": 26700,
+    "highlight": "Topausstattung: 17\"-Alufelgen, Smart-Key, Klimaautomatik, Regensensor, Parksensoren vorn, Totwinkel-Assistent mit Querverkehrswarner, BOSE. Das Assistenz-Paket gibt es nur mit DCT.",
+    "features": {
+     "klima": "A/S",
+     "tempomat": "S (einfach)",
+     "parkpiepser_hinten": "S",
+     "parkpiepser_vorne": "S",
+     "rueckfahrkamera": "S",
+     "digitalcockpit": "S 10,3\"",
+     "touchscreen": "S 10,3\"",
+     "navi": "S",
+     "carplay": "S kabelgebunden",
+     "led_scheinwerfer": "S",
+     "alufelgen": "S 17\"",
+     "sitzheizung": "S",
+     "lenkradheizung": "S",
+     "keyless": "S",
+     "spurhalte": "S",
+     "notbrems": "S (FCA 1.5)",
+     "verkehrszeichen": "S",
+     "totwinkel": "S (BCA + RCCA)",
+     "regensensor": "S",
+     "fenster_hinten": "S",
+     "getoente_scheiben": "S",
+     "mittelarmlehne": "S",
+     "induktives_laden": "S",
+     "sportsitze": "-"
+    }
+   }
+  ]
+ },
+ "clio": {
+  "source": "ADAC renault/clio/vi 343939/345577 only (no Renault price list found)",
+  "confidence": "niedrig",
+  "recommended": "Techno",
+  "note": "Empfehlung: Techno (Alufelgen, Kamera, Navi, Regensensor serienmäßig) · Viele Angaben konnten nicht verifiziert werden (Herstellerseiten gesperrt) – bitte im Konfigurator prüfen",
+  "trims": [
+   {
+    "name": "Evolution",
+    "price": 19900,
+    "highlight": "Einstiegslinie mit 16\"-Stahlfelgen (Alufelgen 400 € Aufpreis), Parksensoren hinten, OpenR Link und Notbremsassistent. Laut ADAC ist ACC Serie, was vermutlich ein Fehler ist.",
+    "features": {
+     "klima": "?",
+     "tempomat": "? (laut ADAC ACC S, ungeprüft)",
+     "parkpiepser_hinten": "S",
+     "parkpiepser_vorne": "-",
+     "rueckfahrkamera": "-",
+     "digitalcockpit": "?",
+     "touchscreen": "?",
+     "navi": "O (Paket)",
+     "carplay": "S",
+     "led_scheinwerfer": "?",
+     "alufelgen": "O 400 € (16\" Stahl: S)",
+     "sitzheizung": "?",
+     "lenkradheizung": "?",
+     "keyless": "?",
+     "spurhalte": "?",
+     "notbrems": "S",
+     "verkehrszeichen": "?",
+     "totwinkel": "?",
+     "regensensor": "O (Paket)",
+     "fenster_hinten": "?",
+     "getoente_scheiben": "?",
+     "mittelarmlehne": "?",
+     "induktives_laden": "?",
+     "sportsitze": "?"
+    }
+   },
+   {
+    "name": "Techno",
+    "price": 21600,
+    "highlight": "Alufelgen, Rückfahrkamera, Navi und Regensensor in Serie; induktives Laden (150 €) und Totwinkel-Assistent (Paket) optional.",
+    "features": {
+     "klima": "?",
+     "tempomat": "?",
+     "parkpiepser_hinten": "S",
+     "parkpiepser_vorne": "?",
+     "rueckfahrkamera": "S",
+     "digitalcockpit": "?",
+     "touchscreen": "?",
+     "navi": "S",
+     "carplay": "S",
+     "led_scheinwerfer": "?",
+     "alufelgen": "S",
+     "sitzheizung": "?",
+     "lenkradheizung": "?",
+     "keyless": "?",
+     "spurhalte": "?",
+     "notbrems": "S",
+     "verkehrszeichen": "?",
+     "totwinkel": "O (Paket)",
+     "regensensor": "S",
+     "fenster_hinten": "?",
+     "getoente_scheiben": "?",
+     "mittelarmlehne": "?",
+     "induktives_laden": "O 150 €",
+     "sportsitze": "?"
+    }
+   }
+  ]
+ }
+};
+
+const SCORE_LABELS = { kosten: "Anschaffung", verbrauch: "Verbrauch", versicherung: "Versicherung",
+  langlebigkeit: "Langlebigkeit", ausstattung: "Ausstattung", fahrspass: "Fahrspaß" };
+const SCORE_COLORS = ["#c0392b", "#e67e22", "#d4ac0d", "#58a55c", "#1a7f37"];
+
+const $ = id => document.getElementById(id);
+const eur = n => n.toLocaleString("de-DE", { style: "currency", currency: "EUR", maximumFractionDigits: 0 });
+const favs = new Set(JSON.parse(localStorage.getItem("kw-favs") || "[]"));
+let view = "cards", tableSort = { key: "rank", dir: 1 };
+
+const usedMid = c => c.usedMedian;
+const newOrInf = c => c.priceNew ?? Infinity;
+const typStr = c => c.typ ? c.typ.join(" / ") : "–";
+const overall = c => {
+  const s = c.scores;
+  return (s.kosten * 1.2 + s.verbrauch + s.versicherung + s.langlebigkeit * 1.3 + s.ausstattung + s.fahrspass * .5) / 6;
+};
+
+// Rough running cost estimate per year for a Jahreswagen: fuel + depreciation (~10 %/yr of used price).
+// LPG cars: ~25 % higher volumetric consumption than petrol, priced with LPG.
+function fuelCost(c, used) {
+  const km = +$("km").value || 0;
+  const lpg = used ? c.lpgUsed : c.lpgNew;
+  if (lpg) {
+    const lpgL = c.fuel === "LPG" ? c.l100 : c.l100 * 1.25;
+    return km / 100 * lpgL * (+$("lpgPrice").value || 0);
+  }
+  const petrolL = c.fuel === "LPG" ? c.l100 / 1.25 : c.l100;
+  return km / 100 * petrolL * (+$("fuelPrice").value || 0);
+}
+const tco = c => fuelCost(c, true) + usedMid(c) * 0.10;
+
+function filtered() {
+  const budget = +$("budget").value, basis = $("basis").value;
+  return CARS.filter(c => !($("onlyFav").checked && !favs.has(c.id)))
+    .filter(c => (basis === "new" ? (c.priceNew ?? c.priceUsed[0]) : c.priceUsed[0]) <= budget);
+}
+function sortCars(list, key, dir = 1) {
+  const f = { rank: c => c.rank, used: c => c.priceUsed[0], new: newOrInf, fuel: c => fuelCost(c, false),
+    tco: tco, overall: c => -overall(c), ps: c => -c.ps, name: c => c.name }[key];
+  return [...list].sort((a, b) => {
+    const x = f(a), y = f(b);
+    return (typeof x === "string" ? x.localeCompare(y) : x - y) * dir;
+  });
+}
+
+function scoreRows(s) {
+  return Object.entries(SCORE_LABELS).map(([k, l]) =>
+    `<span>${l}</span><div class="bar"><span style="width:${s[k] * 20}%;background:${SCORE_COLORS[s[k] - 1]}"></span></div><b>${s[k]}/5</b>`
+  ).join("");
+}
+
+
+const EQ_FEATURES = [
+  ["Komfort", [["klima", "Klimaanlage"], ["tempomat", "Tempomat / ACC"], ["sitzheizung", "Sitzheizung"],
+    ["lenkradheizung", "Lenkradheizung"], ["keyless", "Keyless Entry/Go"], ["fenster_hinten", "El. Fensterheber hinten"],
+    ["mittelarmlehne", "Mittelarmlehne"], ["regensensor", "Regen-/Lichtsensor"], ["sportsitze", "Sportsitze"]]],
+  ["Multimedia", [["touchscreen", "Touchscreen"], ["digitalcockpit", "Digitales Cockpit"], ["navi", "Navigation"],
+    ["carplay", "Apple CarPlay / Android Auto"], ["induktives_laden", "Induktives Laden"]]],
+  ["Parken & Assistenz", [["parkpiepser_hinten", "Parksensoren hinten"], ["parkpiepser_vorne", "Parksensoren vorne"],
+    ["rueckfahrkamera", "Rückfahrkamera"], ["notbrems", "Notbremsassistent"], ["spurhalte", "Spurhalteassistent"],
+    ["verkehrszeichen", "Verkehrszeichenerkennung"], ["totwinkel", "Totwinkelwarner"]]],
+  ["Optik", [["led_scheinwerfer", "LED-Scheinwerfer"], ["alufelgen", "Felgen"], ["getoente_scheiben", "Getönte Scheiben hinten"]]],
+];
+
+function eqCell(v) {
+  if (typeof v === "string") v = v.replace(/^(M|A)\/(S|O)\b/, "$2 $1").replace(/^(S|O) M\b/, "$1 manuell").replace(/^(S|O) A\b/, "$1 Automatik");
+  if (v == null || v === "?") return `<span class="eqQ">?</span>`;
+  const t = String(v).trim();
+  if (t === "-" ) return `<span class="eqN">–</span>`;
+  if (/^-\s/.test(t)) return `<span class="eqN">–</span> <small>${t.slice(1).trim()}</small>`;
+  if (/^\?\s/.test(t)) return `<span class="eqQ">?</span> <small>${t.slice(1).trim()}</small>`;
+  if (/^S\b/.test(t) || /\/S\b/.test(t)) return `<span class="eqS">✓</span> <small>${t.replace(/(^|\/)S\b\s*/,"$1").replace(/^\/|\/$/g,"")}</small>`;
+  if (/^O\b/.test(t) || /\/O\b/.test(t)) return `<span class="eqO">○</span> <small>${t.replace(/(^|\/)O\b\s*/,"$1").replace(/^\/|\/$/g,"")}</small>`;
+  return `<small>${t}</small>`;
+}
+
+function openEquip(id) {
+  const c = CARS.find(x => x.id === id), e = EQUIP[id];
+  const head = e.trims.map(t => `<th class="${t.name === e.recommended ? "rec" : ""}">${t.name}${t.name === e.recommended ? " ⭐" : ""}<br>
+    <small>${t.price ? eur(t.price) : ""}</small></th>`).join("");
+  const rows = EQ_FEATURES.map(([g, feats]) => `<tr class="grp"><td colspan="${e.trims.length + 1}"><span class="gl">${g}</span></td></tr>` +
+    feats.map(([k, l]) => `<tr><td>${l}</td>${e.trims.map(t => `<td>${eqCell(t.features[k])}</td>`).join("")}</tr>`).join("")).join("");
+  $("eqContent").innerHTML = `<h2>#${c.rank} ${c.name} – Ausstattungslinien</h2>
+    <div class="sub">${c.engine}, ${c.ps} PS, ${c.gearbox} · nur Linien, die mit dieser Motor-/Getriebe-Kombination bestellbar sind</div>
+    <div class="hl">${e.trims.map(t => `<div class="${t.name === e.recommended ? "rec" : ""}"><b>${t.name}${t.name === e.recommended ? " ⭐ Empfehlung" : ""}</b><br>${t.highlight || ""}</div>`).join("")}</div>
+    <div class="eqlegend"><span class="eqS">✓</span> Serie &nbsp; <span class="eqO">○</span> optional (Aufpreis/Paket) &nbsp;
+      <span class="eqN">–</span> nicht erhältlich &nbsp; <span class="eqQ">?</span> nicht verifiziert · Angaben ohne Gewähr, Stand ${DATA_STAND}</div>
+    <div style="overflow-x:auto"><table class="eqtable"><thead><tr><th>Ausstattung</th>${head}</tr></thead><tbody>${rows}</tbody></table></div>
+    ${e.note ? `<p class="sub" style="margin-top:10px">ℹ️ ${e.note}</p>` : ""}
+    <p class="sub">Quelle: ${e.source || "–"} (Vertrauen: ${e.confidence || "?"})</p>`;
+  $("eqModal").style.display = "flex";
+}
+
+function discount(c) {
+  if (!c.priceNew) return "";
+  const d = Math.round((1 - c.usedMedian / c.priceNew) * 100);
+  return d > 0 ? ` · ${d} % unter Liste` : ` · <b style="color:#c0392b">teurer als neu!</b>`;
+}
+
+function card(c) {
+  const fNew = fuelCost(c, false), fUsed = fuelCost(c, true);
+  return `<article class="card ${favs.has(c.id) ? "fav" : ""}">
+    <div class="imgwrap" data-id="${c.id}">
+      <img src="${IMG(c.imgNew)}" alt="${c.name}" loading="lazy" data-file="${c.imgNew}">
+      <span class="badge rank">#${c.rank}</span>
+      <span class="badge">${c.ps} PS · ${c.gearbox}</span>
+      ${c.cls !== "Kleinwagen" ? `<span class="badge class">${c.cls}</span>` : ""}
+      ${c.imgUsed ? `<div class="imgtoggle">
+        <button class="active" data-file="${c.imgNew}">Aktuell</button>
+        <button data-file="${c.imgUsed}">${c.imgUsedLabel}</button></div>` : ""}
+    </div>
+    <div class="body">
+      <div class="titlerow"><h2>${c.name}</h2>
+        <button class="star ${favs.has(c.id) ? "on" : ""}" data-fav="${c.id}" title="Favorit">★</button></div>
+      <div class="sub">${c.gen}</div>
+      <div class="specs">
+        <span class="chip">⚙️ ${c.engine}</span>
+        <span class="chip">⛽ ${c.l100.toString().replace(".", ",")} l/100 km${c.fuel === "LPG" ? " (LPG)" : ""} WLTP</span>
+        <span class="chip" title="Haftpflicht / Vollkasko / Teilkasko">🛡️ Typklassen ${typStr(c)}</span>
+        <span class="chip">⭐ Gesamt ${overall(c).toFixed(1).replace(".", ",")}</span>
+      </div>
+      <div class="prices">
+        <div class="price"><div class="lbl">Neupreis (Liste ab)</div>
+          <div class="num">${c.priceNew ? eur(c.priceNew) : "nicht als Schalter"}</div>
+          <div class="det">${c.trimNew}</div></div>
+        <div class="price"><div class="lbl">Jahreswagen</div>
+          <div class="num">${eur(c.priceUsed[0]).replace(/\s€$/, "")} – ${eur(c.priceUsed[1])}</div>
+          <div class="det">Median ≈ ${eur(c.usedMedian)}${discount(c)}</div></div>
+      </div>
+      <div class="sub" style="margin-top:0">ℹ️ ${c.usedNote}</div>
+      <div class="sub" style="margin-top:0">🔧 ADAC-Pannen je 1.000 Fzg.: ${c.pannen}</div>
+      <div class="scores">${scoreRows(c.scores)}</div>
+      <div class="pc">
+        <div class="pro"><h4>👍 Vorteile</h4><ul>${c.pros.map(p => `<li>${p}</li>`).join("")}</ul></div>
+        <div class="con"><h4>👎 Nachteile</h4><ul>${c.cons.map(p => `<li>${p}</li>`).join("")}</ul></div>
+      </div>
+      ${c.warn ? `<div class="warnbox">⚠️ ${c.warn}</div>` : ""}
+      ${c.tip ? `<div class="tip">💡 ${c.tip}</div>` : ""}
+      ${c.tip2 ? `<div class="tip">💡 ${c.tip2}</div>` : ""}
+      ${EQUIP[c.id] ? `<button class="eqbtn" data-eq="${c.id}">🧰 Ausstattung nach Linien vergleichen</button>` : ""}
+      ${c.links ? `<div class="links">
+        <a href="${c.links.maker}" target="_blank" rel="noopener">🌐 Herstellerseite</a>
+        <a href="${c.links.adac}" target="_blank" rel="noopener">📘 ADAC Autokatalog</a>
+        <a href="https://www.autoscout24.de/lst/${c.links.adac.split("/").slice(-3, -1).join("/")}?atype=C&amp;gear=M&amp;fregfrom=${new Date().getFullYear() - 2}&amp;sort=price&amp;desc=0" target="_blank" rel="noopener">🔎 Jahreswagen suchen</a>
+      </div>` : ""}
+      <div class="cost">Kraftstoff/Jahr: Neu <b>${eur(fNew)}</b> · Jahreswagen <b>${eur(fUsed)}</b>
+        · Grobe Kosten/Jahr Jahreswagen (Sprit + ~10 % Wertverlust): <b>${eur(tco(c))}</b></div>
+    </div>
+  </article>`;
+}
+
+function renderTable(list) {
+  const cols = [
+    ["#", "rank"], ["", null], ["Modell", "name"], ["PS", "ps"], ["Motor", null], ["Neupreis", "new"], ["Jahreswagen", "used"],
+    ["l/100 km", "fuel"], ["Sprit/Jahr", "fuel"], ["Kosten/Jahr*", "tco"],
+    ["Typklassen KH/VK/TK", null], ["Haltbark.", null], ["Ausstatt.", null], ["Gesamt", "overall"]
+  ];
+  const sorted = sortCars(list, tableSort.key, tableSort.dir);
+  const min = k => Math.min(...list.map(k));
+  const minNew = min(newOrInf), minUsed = min(c => c.priceUsed[0]), minTco = min(tco);
+  $("tbl").innerHTML = `<thead><tr>${cols.map(([l, k]) => `<th ${k ? `data-sort="${k}"` : ""}>${l}${k === tableSort.key ? (tableSort.dir > 0 ? " ▲" : " ▼") : ""}</th>`).join("")}</tr></thead>
+  <tbody>${sorted.map(c => `<tr>
+    <td class="num"><b>#${c.rank}</b></td>
+    <td><img src="${IMG(c.imgNew)}" alt="" loading="lazy"></td>
+    <td><b>${c.name}</b>${favs.has(c.id) ? " ★" : ""}<br><small>${c.cls}</small></td>
+    <td class="num">${c.ps}</td><td>${c.engine}<br><small>${c.gearbox}</small></td>
+    <td class="num ${c.priceNew === minNew ? "best" : ""}">${c.priceNew ? eur(c.priceNew) : "–"}</td>
+    <td class="num ${c.priceUsed[0] === minUsed ? "best" : ""}">${eur(c.priceUsed[0]).replace(/\s€$/, "")} – ${eur(c.priceUsed[1])}</td>
+    <td class="num">${c.l100.toString().replace(".", ",")}${c.fuel === "LPG" ? " LPG" : ""}</td>
+    <td class="num">${eur(fuelCost(c, false))}</td>
+    <td class="num ${tco(c) === minTco ? "best" : ""}">${eur(tco(c))}</td>
+    <td class="num">${typStr(c)}</td><td class="num">${c.scores.langlebigkeit}/5</td>
+    <td class="num">${c.scores.ausstattung}/5</td><td class="num"><b>${overall(c).toFixed(1).replace(".", ",")}</b></td>
+  </tr>`).join("")}</tbody>
+  <tfoot><tr><td colspan="14"><small>* Jahreswagen: Kraftstoff + ca. 10 % Wertverlust p.a., ohne Versicherung/Steuer/Wartung.
+   Typklassen: niedriger = günstiger (Haftpflicht 10–25, Vollkasko 10–34, Teilkasko 10–33).</small></td></tr></tfoot>`;
+}
+
+function render() {
+  $("budgetVal").textContent = eur(+$("budget").value);
+  const list = filtered();
+  $("cards").innerHTML = list.length
+    ? sortCars(list, $("sort").value).map(card).join("")
+    : "<p>Keine Modelle im gewählten Budget/Filter.</p>";
+  renderTable(list);
+}
+
+document.addEventListener("input", e => { if (e.target.closest(".controls")) render(); });
+document.querySelectorAll(".tabs button").forEach(b => b.addEventListener("click", () => {
+  document.querySelectorAll(".tabs button").forEach(x => x.classList.toggle("active", x === b));
+  view = b.dataset.view;
+  $("cards").classList.toggle("hidden", view !== "cards");
+  $("tableView").classList.toggle("hidden", view !== "table");
+}));
+document.addEventListener("click", e => {
+  const eqb = e.target.closest("[data-eq]");
+  if (eqb) return openEquip(eqb.dataset.eq);
+  if (e.target.id === "eqModal" || e.target.closest("#eqModal .close")) { $("eqModal").style.display = "none"; return; }
+  const fav = e.target.closest("[data-fav]");
+  if (fav) {
+    const id = fav.dataset.fav;
+    favs.has(id) ? favs.delete(id) : favs.add(id);
+    localStorage.setItem("kw-favs", JSON.stringify([...favs]));
+    return render();
+  }
+  const tgl = e.target.closest(".imgtoggle button");
+  if (tgl) {
+    e.stopPropagation();
+    const wrap = tgl.closest(".imgwrap"), img = wrap.querySelector("img");
+    wrap.querySelectorAll(".imgtoggle button").forEach(x => x.classList.toggle("active", x === tgl));
+    img.src = IMG(tgl.dataset.file); img.dataset.file = tgl.dataset.file;
+    return;
+  }
+  const th = e.target.closest("th[data-sort]");
+  if (th) {
+    tableSort = { key: th.dataset.sort, dir: tableSort.key === th.dataset.sort ? -tableSort.dir : 1 };
+    return render();
+  }
+  const wrap = e.target.closest(".imgwrap");
+  if (wrap) {
+    const img = wrap.querySelector("img"), lb = $("lightbox");
+    lb.querySelector("img").src = IMG(img.dataset.file).replace("width=1000", "width=1800");
+    lb.querySelector("div").innerHTML = `Bild: <a style="color:#9cf" target="_blank" href="${COMMONS(img.dataset.file)}">Wikimedia Commons</a> (Lizenz siehe Dateiseite)`;
+    lb.style.display = "flex";
+    return;
+  }
+  if (e.target.closest("#lightbox") && e.target.tagName !== "A") $("lightbox").style.display = "none";
+});
+document.addEventListener("keydown", e => { if (e.key === "Escape") { $("lightbox").style.display = "none"; $("eqModal").style.display = "none"; } });
+
+$("excluded").innerHTML = EXCLUDED.map(x => `<div class="exitem"><b>${x.name}</b>${x.why}</div>`).join("");
+$("dataNote").innerHTML = `<b>Datenstand ${DATA_STAND}.</b> Neupreise, Motoren, WLTP-Verbrauch, Typklassen (Haftpflicht/Vollkasko/Teilkasko)
+  und Pannenstatistik: ADAC-Autokatalog. Jahreswagen: Stichprobe AutoScout24 (EZ 2025, 8–20 Tkm, Schaltgetriebe, ≥ 74 kW),
+  je ~20 Inserate – grobe Orientierung, keine Marktstatistik. Händlerrabatte und Tageszulassungen verschieben Preise stark.
+  Bewertungen (1–5) sind eine eigene Einschätzung, keine Testnoten. Werte mit „unverifiziert“ vor dem Kauf prüfen.`;
+$("footer").innerHTML = `Quellen: <a href="https://www.adac.de/rund-ums-fahrzeug/autokatalog/" target="_blank">ADAC Autokatalog</a>,
+  <a href="https://www.autoscout24.de" target="_blank">AutoScout24</a>.
+  Bilder: Wikimedia Commons (diverse Urheber, u.a. CC BY-SA – Details per Klick auf das Bild → Dateiseite).
+  Bilder zeigen teils andere Ausstattungslinien/Antriebe als die gelistete Variante.`;
+render();
+</script>
+</body>
+</html>
