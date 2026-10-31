@@ -141,6 +141,7 @@
     .eqtable tr:not(.grp) > td:not(:first-child) { min-width: 130px; }
   }
   @media print { .controls, .tabs, .star, .imgtoggle { display: none !important; } .card { break-inside: avoid; } }
+.links .lhint{flex-basis:100%;font-size:.75rem;color:var(--muted,#888);margin-top:2px}
 </style>
 </head>
 <body>
@@ -219,7 +220,7 @@ const DATA_STAND = "30.10.2026";
  */
 const CARS = [
   {
-    id: "ibiza", rank: 1, links: {maker: "https://www.seat.de/modelle/seat-ibiza", adac: "https://www.adac.de/rund-ums-fahrzeug/autokatalog/marken-modelle/seat/ibiza/"}, name: "Seat Ibiza", cls: "Kleinwagen", gen: "Generation KJ/6F, Facelift seit 11/2025",
+    id: "ibiza", rank: 1, links: {mobile: "22500;7", maker: "https://www.seat.de/modelle/seat-ibiza", adac: "https://www.adac.de/rund-ums-fahrzeug/autokatalog/marken-modelle/seat/ibiza/"}, name: "Seat Ibiza", cls: "Kleinwagen", gen: "Generation KJ/6F, Facelift seit 11/2025",
     engine: "1.0 TSI", ps: 115, gearbox: "6-Gang manuell", fuel: "Benzin", l100: 5.2,
     priceNew: 24150, trimNew: "Style (FR ab 27.110 €)",
     priceUsed: [15700, 19700], usedMedian: 17200,
@@ -238,7 +239,7 @@ const CARS = [
     tip: "Preis-Leistungs-Tipp: Ibiza Vor-Facelift als Jahreswagen (~17.000 €) – Sieger bei Haltbarkeit + Versicherung.",
   },
   {
-    id: "fabia", rank: 2, links: {maker: "https://www.skoda-auto.de/modelle/fabia/fabia", adac: "https://www.adac.de/rund-ums-fahrzeug/autokatalog/marken-modelle/skoda/fabia/"}, name: "Škoda Fabia", cls: "Kleinwagen", gen: "Generation IV, seit 2021",
+    id: "fabia", rank: 2, links: {mobile: "22900;6", maker: "https://www.skoda-auto.de/modelle/fabia/fabia", adac: "https://www.adac.de/rund-ums-fahrzeug/autokatalog/marken-modelle/skoda/fabia/"}, name: "Škoda Fabia", cls: "Kleinwagen", gen: "Generation IV, seit 2021",
     engine: "1.0 TSI", ps: 115, gearbox: "6-Gang manuell", fuel: "Benzin", l100: 5.0,
     priceNew: 24660, trimNew: "Selection (Schalter nur Selection & Monte Carlo)",
     priceUsed: [17000, 21100], usedMedian: 19400,
@@ -256,7 +257,7 @@ const CARS = [
     tip: "Vernunft-Tipp: Bester Mix aus Platz, Verbrauch und Werterhalt.",
   },
   {
-    id: "208", rank: 5, links: {maker: "https://www.peugeot.de/modelle/208.html", adac: "https://www.adac.de/rund-ums-fahrzeug/autokatalog/marken-modelle/peugeot/208/"}, name: "Peugeot 208", cls: "Kleinwagen", gen: "Generation II, Facelift; neuer Motor „Turbo 100“ seit 02/2026",
+    id: "208", rank: 5, links: {mobile: "19300;43", maker: "https://www.peugeot.de/modelle/208.html", adac: "https://www.adac.de/rund-ums-fahrzeug/autokatalog/marken-modelle/peugeot/208/"}, name: "Peugeot 208", cls: "Kleinwagen", gen: "Generation II, Facelift; neuer Motor „Turbo 100“ seit 02/2026",
     engine: "1.2 Turbo 100 (neu) / PureTech 100 (Jahreswagen)", ps: 101, gearbox: "6-Gang manuell", fuel: "Benzin", l100: 5.1,
     priceNew: 25280, trimNew: "Style (Allure 26.280 €)",
     priceUsed: [13700, 18000], usedMedian: 15500,
@@ -275,7 +276,7 @@ const CARS = [
     warn: "Jahreswagen = PureTech mit Nassriemen: Zersetzung des Riemens ist ein bekanntes Problem. Wartungsnachweis, Riemenzustand und Stellantis-Garantieverlängerung prüfen – oder gezielt Neuwagen mit Turbo 100 (Kette) kaufen.",
   },
   {
-    id: "corsa", rank: 4, links: {maker: "https://www.opel.de/fahrzeuge/corsa-modelle/corsa/uebersicht.html", adac: "https://www.adac.de/rund-ums-fahrzeug/autokatalog/marken-modelle/opel/corsa/"}, name: "Opel Corsa", cls: "Kleinwagen", gen: "Generation F, Facelift 2024; Turbo 100 mit Kette seit 11/2025",
+    id: "corsa", rank: 4, links: {mobile: "19000;10", maker: "https://www.opel.de/fahrzeuge/corsa-modelle/corsa/uebersicht.html", adac: "https://www.adac.de/rund-ums-fahrzeug/autokatalog/marken-modelle/opel/corsa/"}, name: "Opel Corsa", cls: "Kleinwagen", gen: "Generation F, Facelift 2024; Turbo 100 mit Kette seit 11/2025",
     engine: "1.2 Turbo 100", ps: 100, gearbox: "6-Gang manuell", fuel: "Benzin", l100: 5.1,
     priceNew: 23340, trimNew: "Edition (GS 25.690 €)",
     priceUsed: [13500, 16400], usedMedian: 14000,
@@ -294,7 +295,7 @@ const CARS = [
     warn: "ADAC-Hinweis Rückruf: Riemenscheibe der Wasserpumpe kann durchrutschen → Riemen versetzt → Motorschaden (Bauzeitraum 06/2023–01/2026). Beim Jahreswagen Rückruf-Erledigung per FIN prüfen lassen!",
   },
   {
-    id: "clio", rank: 8, links: {maker: "https://www.renault.de/hybridfahrzeuge/clio.html", adac: "https://www.adac.de/rund-ums-fahrzeug/autokatalog/marken-modelle/renault/clio/"}, name: "Renault Clio", cls: "Kleinwagen", gen: "Neu: Clio VI (seit 01/2026) · Jahreswagen: Clio V",
+    id: "clio", rank: 8, links: {mobile: "20700;6", maker: "https://www.renault.de/hybridfahrzeuge/clio.html", adac: "https://www.adac.de/rund-ums-fahrzeug/autokatalog/marken-modelle/renault/clio/"}, name: "Renault Clio", cls: "Kleinwagen", gen: "Neu: Clio VI (seit 01/2026) · Jahreswagen: Clio V",
     engine: "TCe 115 (Clio VI) / ECO-G 100 Autogas (Clio V)", ps: 115, gearbox: "6-Gang manuell", fuel: "Benzin", l100: 5.1,
     priceNew: 19900, trimNew: "evolution (techno 21.600 €)",
     priceUsed: [17000, 20500], usedMedian: 19000,
@@ -314,7 +315,7 @@ const CARS = [
     lpgUsed: true,
   },
   {
-    id: "c3", rank: 6, links: {maker: "https://www.citroen.de/modelle/c3.html", adac: "https://www.adac.de/rund-ums-fahrzeug/autokatalog/marken-modelle/citroen/c3/"}, name: "Citroën C3", cls: "Kleinwagen", gen: "Generation IV, seit 2024",
+    id: "c3", rank: 6, links: {mobile: "5900;11", maker: "https://www.citroen.de/modelle/c3.html", adac: "https://www.adac.de/rund-ums-fahrzeug/autokatalog/marken-modelle/citroen/c3/"}, name: "Citroën C3", cls: "Kleinwagen", gen: "Generation IV, seit 2024",
     engine: "1.2 Turbo 100", ps: 101, gearbox: "6-Gang manuell", fuel: "Benzin", l100: 5.5,
     priceNew: 16290, trimNew: "You (Basis, unverifiziert) · Plus ab 19.700 €",
     priceUsed: [13300, 17000], usedMedian: 15000,
@@ -332,7 +333,7 @@ const CARS = [
     tip: "Komfort-Tipp: Als Neuwagen „Plus“ (19.700 €) ein guter Mittelweg.",
   },
   {
-    id: "sandero", rank: 3, links: {maker: "https://www.dacia.de/modelle/sandero-stadtauto.html", adac: "https://www.adac.de/rund-ums-fahrzeug/autokatalog/marken-modelle/dacia/sandero/"}, name: "Dacia Sandero", cls: "Kleinwagen", gen: "Generation III, Facelift seit 12/2025",
+    id: "sandero", rank: 3, links: {mobile: "6600;24", maker: "https://www.dacia.de/modelle/sandero-stadtauto.html", adac: "https://www.adac.de/rund-ums-fahrzeug/autokatalog/marken-modelle/dacia/sandero/"}, name: "Dacia Sandero", cls: "Kleinwagen", gen: "Generation III, Facelift seit 12/2025",
     engine: "TCe 100 (Benzin)", ps: 100, gearbox: "6-Gang manuell", fuel: "Benzin", l100: 5.3,
     priceNew: 13590, trimNew: "Essential (Expression 14.890 €, Journey 16.190 €)",
     priceUsed: [16000, 19000], usedMedian: 17900,
@@ -352,7 +353,7 @@ const CARS = [
     tip2: "Budget-Tipp: Neu kaufen – billiger als die angebotenen „Jahreswagen“.",
   },
   {
-    id: "i20", rank: 7, links: {maker: "https://www.hyundai.com/de/de/modelle/i20.html", adac: "https://www.adac.de/rund-ums-fahrzeug/autokatalog/marken-modelle/hyundai/i20/"}, name: "Hyundai i20", cls: "Kleinwagen", gen: "Generation III; Facelift seit 11/2025",
+    id: "i20", rank: 7, links: {mobile: "11600;32", maker: "https://www.hyundai.com/de/de/modelle/i20.html", adac: "https://www.adac.de/rund-ums-fahrzeug/autokatalog/marken-modelle/hyundai/i20/"}, name: "Hyundai i20", cls: "Kleinwagen", gen: "Generation III; Facelift seit 11/2025",
     engine: "1.0 T-GDI", ps: 100, gearbox: "6-Gang manuell", fuel: "Benzin", l100: 5.4,
     priceNew: 21900, trimNew: "Letzter Listenpreis Vor-Facelift (Select). Facelift-Select nur 90 PS – 100 PS + Schaltung beim Händler prüfen",
     priceUsed: [15000, 18000], usedMedian: 16500,
@@ -1366,7 +1367,9 @@ function card(c) {
       ${c.links ? `<div class="links">
         <a href="${c.links.maker}" target="_blank" rel="noopener">🌐 Herstellerseite</a>
         <a href="${c.links.adac}" target="_blank" rel="noopener">📘 ADAC Autokatalog</a>
-        <a href="https://www.autoscout24.de/lst/${c.links.adac.split("/").slice(-3, -1).join("/")}?atype=C&amp;gear=M&amp;fregfrom=${new Date().getFullYear() - 2}&amp;sort=price&amp;desc=0" target="_blank" rel="noopener">🔎 Jahreswagen suchen</a>
+        <a href="https://www.autoscout24.de/lst/${c.links.adac.split("/").slice(-3, -1).join("/")}?atype=C&amp;cy=D&amp;damaged_listing=exclude&amp;fregfrom=2026&amp;fregto=2026&amp;fuel=B%2CL&amp;gear=M&amp;kmto=20000&amp;powerfrom=74&amp;powertype=kw&amp;sort=price&amp;desc=0" target="_blank" rel="noopener" title="EZ 2026, Schaltgetriebe, Benzin/LPG, ab 100 PS, unfallfrei, unter 20.000 km">🔎 Jahreswagen AutoScout24</a>
+        <a href="https://suchen.mobile.de/fahrzeuge/search.html?isSearchRequest=true&amp;s=Car&amp;vc=Car&amp;ms=${encodeURIComponent(c.links.mobile + ";;")}&amp;fr=2026%3A2026&amp;ft=PETROL&amp;ft=LPG&amp;tr=MANUAL_GEAR&amp;pw=74%3A&amp;ml=%3A20000&amp;dam=false&amp;sb=p&amp;od=up" target="_blank" rel="noopener" title="EZ 2026, Schaltgetriebe, Benzin/LPG, ab 100 PS, unfallfrei, unter 20.000 km">🔎 Jahreswagen mobile.de</a>
+        <div class="lhint">Jahreswagen-Suche: EZ 2026 · Schaltgetriebe · Benzin/LPG · ab 100 PS · unfallfrei · &lt; 20.000 km · günstigste zuerst</div>
       </div>` : ""}
       <div class="cost">Kraftstoff/Jahr: Neu <b>${eur(fNew)}</b> · Jahreswagen <b>${eur(fUsed)}</b>
         · Grobe Kosten/Jahr Jahreswagen (Sprit + ~10 % Wertverlust): <b>${eur(tco(c))}</b></div>
